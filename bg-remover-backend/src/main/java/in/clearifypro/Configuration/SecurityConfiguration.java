@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final ClerkJwtAuthFilter jwtAuthFilter;
-
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors ( Customizer.withDefaults ( ) )
                 .csrf ( AbstractHttpConfigurer::disable )
