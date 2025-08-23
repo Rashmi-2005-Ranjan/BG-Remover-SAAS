@@ -31,49 +31,63 @@ public class ClerkJwtAuthFilter extends OncePerRequestFilter {
     private final ClerkJwksProvider jwksProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request , HttpServletResponse response , FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader ( "Authorization" );
-        if (authHeader == null || !authHeader.startsWith ( "Bearer " )) {
-            response.sendError ( HttpServletResponse.SC_FORBIDDEN , "Authorization Header Missing/Invalid" );
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader("Authorization");
+        System.out.println("🔎 [DEBUG] Incoming Authorization Header: " + authHeader);
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("❌ [DEBUG] Missing or invalid Authorization header");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Authorization Header Missing/Invalid");
             return;
         }
+
         try {
-            String token = authHeader.substring ( 7 );
+            String token = authHeader.substring(7);
+            System.out.println("🔎 [DEBUG] Extracted JWT: " + token);
 
-            //Extract Key Id From Token Header
-            // Split The Token Into 3 Parts i.e header.payload.signature
-            String[] chunks = token.split ( "\\." );
-            //chunks[0] --> Header , chunks[1] --> payload , chunks[2] ---> signature
+            // Split token to get header, payload, signature
+            String[] chunks = token.split("\\.");
+            String headerJson = new String(Base64.getUrlDecoder().decode(chunks[0]));
+            String payloadJson = new String(Base64.getUrlDecoder().decode(chunks[1]));
 
-            //Decoding the header for getting the key id
-            String headerJson = new String ( Base64.getUrlDecoder ( ).decode ( chunks[0] ) );
-            ObjectMapper mapper = new ObjectMapper ( );
-            JsonNode headerNode = mapper.readTree ( headerJson );
-            String kid = headerNode.get ( "kid" ).asText ( );
+            System.out.println("🔎 [DEBUG] JWT Header: " + headerJson);
+            System.out.println("🔎 [DEBUG] JWT Payload: " + payloadJson);
 
-            //Get The correct Public Key
-            PublicKey publicKey = jwksProvider.getPublicKey ( kid );
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode headerNode = mapper.readTree(headerJson);
+            String kid = headerNode.get("kid").asText();
+            System.out.println("🔎 [DEBUG] Key ID (kid): " + kid);
 
-            //Verify The Token
-            Claims claims = Jwts.parserBuilder ( )
-                    .setSigningKey ( publicKey )
-                    .setAllowedClockSkewSeconds ( 60 )
-                    .requireIssuer ( clerkIssuer )
-                    .build ( )
-                    .parseClaimsJws ( token )
-                    .getBody ( );
+            // Get the public key
+            PublicKey publicKey = jwksProvider.getPublicKey(kid);
+            System.out.println("🔎 [DEBUG] Loaded Public Key: " + publicKey);
 
-            String clerkUserid = claims.getSubject ( );
+            // Verify the token
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(publicKey)
+                    .setAllowedClockSkewSeconds(60)
+                    .requireIssuer(clerkIssuer)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken (
-                    clerkUserid , null , Collections.singletonList (
-                    new SimpleGrantedAuthority ( "ROLE_ADMIN" )
-            ) );
+            System.out.println("✅ [DEBUG] JWT Successfully Verified!");
+            System.out.println("🔎 [DEBUG] Claims: " + claims);
 
-            SecurityContextHolder.getContext ( ).setAuthentication ( authenticationToken );
-            filterChain.doFilter ( request , response );
+            String clerkUserid = claims.getSubject();
+            System.out.println("🔎 [DEBUG] Clerk User ID (sub): " + clerkUserid);
+
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    clerkUserid, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
+
         } catch (Exception ex) {
-            response.sendError ( HttpServletResponse.SC_FORBIDDEN , "Invalid JWT Token" );
+            System.out.println("❌ [DEBUG] JWT Validation Failed: " + ex.getMessage());
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid JWT Token");
         }
     }
 }

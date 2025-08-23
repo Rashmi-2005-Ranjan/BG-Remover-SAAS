@@ -26,10 +26,9 @@ public class ClerkJwksProvider {
     public PublicKey getPublicKey(String kid) throws Exception {
         if (keyCache.containsKey ( kid ) && System.currentTimeMillis ( ) - lastFetchedTime < CACHE_EXPIRATION_TIME) {
             return keyCache.get ( kid );
-        } else {
-            refreshKeys ( );
-            return keyCache.get ( kid );
         }
+        refreshKeys ( );
+        return keyCache.get ( kid );
     }
 
     private void refreshKeys() throws Exception {
@@ -40,7 +39,7 @@ public class ClerkJwksProvider {
             String kid = keyNode.get ( "kid" ).asText ( );
             String kty = keyNode.get ( "kty" ).asText ( );
             String alg = keyNode.get ( "alg" ).asText ( );
-            if ("RSA".equals ( kty ) && "RSA256".equals ( alg )) {
+            if ("RSA".equals ( kty ) && "RS256".equals ( alg )) {
                 String modulus = keyNode.get ( "n" ).asText ( );
                 String exponent = keyNode.get ( "e" ).asText ( );
                 PublicKey publicKey = createPublicKey ( modulus , exponent );
