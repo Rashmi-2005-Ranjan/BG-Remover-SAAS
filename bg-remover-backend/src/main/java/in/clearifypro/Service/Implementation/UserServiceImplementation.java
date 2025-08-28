@@ -5,6 +5,7 @@ import in.clearifypro.Entity.UserEntity;
 import in.clearifypro.Repository.UserRepository;
 import in.clearifypro.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,6 +33,20 @@ public class UserServiceImplementation implements UserService {
         UserEntity newUser = mapToEntity ( userDTO );
         userRepository.save ( newUser );
         return mapToDto ( newUser );
+    }
+
+    @Override
+    public UserDTO getUserByClerkId(String clerkId) {
+        UserEntity userEntity = userRepository.findByClerkId ( clerkId )
+                .orElseThrow ( () -> new UsernameNotFoundException ( "User Not Found" ) );
+        return mapToDto ( userEntity );
+    }
+
+    @Override
+    public void deleteUserByClerkId(String clerkId) {
+        UserEntity userEntity = userRepository.findByClerkId ( clerkId )
+                .orElseThrow ( () -> new UsernameNotFoundException ( "User Not Found" ) );
+        userRepository.delete ( userEntity );
     }
 
     private UserDTO mapToDto(UserEntity newUser) {

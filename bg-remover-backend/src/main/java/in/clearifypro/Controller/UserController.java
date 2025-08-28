@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -41,6 +44,40 @@ public class UserController {
                     .data ( e.getMessage ( ) )
                     .build ( );
             return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).body ( response );
+        }
+    }
+
+    @GetMapping("/credits")
+    public ResponseEntity<?> getUserCredits(Authentication authentication) {
+        RemoveBgResponse bgResponse = null;
+        try {
+            if (authentication.getName ( ).isEmpty ( ) || authentication.getName ( ) == null) {
+                bgResponse = RemoveBgResponse.builder ( )
+                        .statusCode ( HttpStatus.FORBIDDEN )
+                        .data ( "User Does Not Have Permission TO This Resource" )
+                        .success ( false )
+                        .build ( );
+                return ResponseEntity.status ( HttpStatus.FORBIDDEN ).body ( bgResponse );
+            }
+            String clerkId = authentication.getName ( );
+            UserDTO existingUser = userService.getUserByClerkId ( clerkId );
+            Map<String, Integer> map = new HashMap<> ( );
+            map.put ( "credits" , existingUser.getCredits ( ) );
+            bgResponse = RemoveBgResponse.builder ( )
+                    .statusCode ( HttpStatus.OK )
+                    .data ( map )
+                    .success ( true )
+                    .build ( );
+            return ResponseEntity.status ( HttpStatus.OK )
+                    .body ( bgResponse );
+        } catch (Exception e) {
+            bgResponse = RemoveBgResponse.builder ( )
+                    .statusCode ( HttpStatus.OK )
+                    .data ( "Something Went Wrong" )
+                    .success ( false )
+                    .build ( );
+            return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR )
+                    .body ( bgResponse );
         }
     }
 }
