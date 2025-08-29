@@ -1,6 +1,26 @@
 import {plans} from "../assets.js";
+import {useAuth, useClerk} from "@clerk/clerk-react";
+import {placeOrder} from "../Service/OrderService.js";
+import {useContext} from "react";
+import {AppContext} from "../Context/AppContext.jsx";
 
 const Pricing = () => {
+    const {isSignedIn, getToken} = useAuth();
+    const {openSignIn} = useClerk();
+    const {loadUserCredit, backendurl} = useContext(AppContext);
+    const handleOrder = (planId) => {
+        if (!isSignedIn) {
+            return openSignIn();
+        }
+        placeOrder({
+                planId,
+                getToken,
+                onSuccess: () => {
+                    loadUserCredit();
+                }, backendurl
+            }
+        );
+    }
     return (
         <div className="py-10 md:px-20 lg:px-20">
             <div className="container mx-auto px-4">
@@ -48,7 +68,7 @@ const Pricing = () => {
                                             w-full py-3 px-6 text-center text-white font-semibold rounded-full
                                             bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600
                                             transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer
-                                            "
+                                            " onClick={() => handleOrder(plan.id)}
                                     >
                                         Choose Plan
                                     </button>

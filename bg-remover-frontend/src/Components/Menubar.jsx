@@ -1,14 +1,16 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {assets} from "../assets.js";
 import {Menu, X} from "lucide-react";
-import {Link} from "react-router-dom";
-import {SignedIn, SignedOut, useAuth, useClerk, UserButton, useUser} from "@clerk/clerk-react";
+import {Link, useNavigate} from "react-router-dom";
+import {SignedIn, SignedOut, useClerk, UserButton, useUser} from "@clerk/clerk-react";
+import {AppContext} from "../Context/AppContext.jsx";
 
 const Menubar = () => {
+    const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const {openSignIn, openSignUp} = useClerk();
     const {user} = useUser();
-    const {getToken} = useAuth();
+    const {credit} = useContext(AppContext)
     const openRegister = () => {
         setMenuOpen(false);
         openSignUp({});
@@ -16,11 +18,6 @@ const Menubar = () => {
     const openLogin = () => {
         setMenuOpen(false);
         openSignIn({});
-    }
-    const getData = async () => {
-        const token = await getToken();
-        console.log(token);
-        console.log(user.id);
     }
     return (
         <nav className="bg-white px-8 py-4 flex justify-between items-center">
@@ -51,15 +48,12 @@ const Menubar = () => {
                 </SignedOut>
                 <SignedIn>
                     <div className="flex items-center gap-2 sm:gap-3">
-                        <button
-                            className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
+                        <button onClick={() => navigate("/pricing")}
+                                className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
                             <img src={assets.dollar} alt="credit" height={24} width={24}/>
                             <p className="text-xs sm:text-sm font-medium text-gray-600">
-                                Credits: 0
+                                Credits: {credit}
                             </p>
-                        </button>
-                        <button onClick={getData}>
-                            Get data
                         </button>
                         <p className="text-gray-600 max-sm:hidden">
                             Hi, <span className="text-blue-500 font-semibold">{user ? user.fullName : user}</span>
@@ -97,11 +91,11 @@ const Menubar = () => {
                     </SignedOut>
                     <SignedIn>
                         <div className="flex items-center gap-2 sm:gap-3">
-                            <button
-                                className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
+                            <button onClick={() => navigate("/pricing")}
+                                    className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
                                 <img src={assets.dollar} alt="credit" height={24} width={24}/>
                                 <p className="text-xs sm:text-sm font-medium text-gray-600">
-                                    Credits: 0
+                                    Credits: {credit}
                                 </p>
                             </button>
                         </div>
