@@ -51,7 +51,7 @@ export const plans = [
         id: "Basic",
         name: "Basic Package",
         price: 499,
-        credit: "100 Credits",
+        credit: "300 Credits",
         description: "Best For Personal Use",
         popular: false
     },
@@ -59,7 +59,7 @@ export const plans = [
         id: "Premium",
         name: "Premium Package",
         price: 899,
-        credit: "250 Credits",
+        credit: "800 Credits",
         description: "Best For Small Business",
         popular: true
     },
@@ -67,7 +67,7 @@ export const plans = [
         id: "Ultimate",
         name: "Ultimate Package",
         price: 1499,
-        credit: "1000 Credits",
+        credit: "1500 Credits",
         description: "Best For Enterprise Use",
         popular: false
     }
