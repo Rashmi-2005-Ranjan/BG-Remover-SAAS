@@ -8,7 +8,7 @@ const Header = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
             {/* Left Section Video Banner */}
             <div className="order-2 md:order-1 flex justify-center">
-                <div className="shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] rounded-3xl overflow-hidden">
+                <div className="shadow-[0_25px_50px_-12px_rgba(147,51,234,0.3)] rounded-3xl overflow-hidden border border-white/10">
                     <video
                         src={assets.video_banner}
                         autoPlay
@@ -20,10 +20,10 @@ const Header = () => {
             </div>
             {/* Text Content*/}
             <div className="order-1 md:order-2">
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                    The Fastest <span className="text-indigo-700">background eraser.</span>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                    The Fastest <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">background eraser.</span>
                 </h1>
-                <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+                <p className="text-gray-300 mb-8 text-lg leading-relaxed">
                     Give Your Photos a Fresh Look with Our Background Remover! Focus on your subject, erase the
                     background, and replace it with endless creative possibilities. Instantly place your subject into
                     stunning new scenes and designs. Start now and explore a whole new world for your images!
@@ -32,7 +32,7 @@ const Header = () => {
                     <input type="file" accept="image/*" id="upload1" hidden
                            onChange={(e) => removeBg(e.target.files[0])}/>
                     <label
-                        className="cursor-pointer bg-black text-white font-medium px-8 py-4 rounded-full hover:opacity-90 transition-transform hover:scale-105 text-lg"
+                        className="cursor-pointer bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium px-8 py-4 rounded-full hover:shadow-xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 text-lg inline-block"
                         htmlFor="upload1"
                     >
                         Upload Your Image

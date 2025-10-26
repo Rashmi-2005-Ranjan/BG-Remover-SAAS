@@ -22,14 +22,14 @@ const Pricing = () => {
         );
     }
     return (
-        <div className="py-10 md:px-20 lg:px-20">
+        <div className="py-20 md:px-20 lg:px-20">
             <div className="container mx-auto px-4">
                 {/*    Section Title*/}
-                <div className="mb-12 text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
-                        Choose Your Perfect Plan
+                <div className="mb-16 text-center">
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                        Choose Your <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Perfect Plan</span>
                     </h2>
-                    <p className="mx-auto mt-4 max-w-2xl text-black-400">
+                    <p className="mx-auto mt-4 max-w-2xl text-xl text-gray-300">
                         Select From Our Carefully Curated Packages Designed to Meet Your Needs and Budget
                     </p>
                 </div>
@@ -38,37 +38,59 @@ const Pricing = () => {
                     {
                         plans.map((plan) => (
                             <div key={plan.id}
-                                 className={`relative pt-6 p-6 ${plan.popular ? 'backdrop-blur-lg rounded-2xl' : 'border-gray-800 rounded-xl'} bg-[#1A1A1A] hover:transform hover:-translate-y-2 transition-all duration-300`}>
+                                 className={`relative ${plan.popular ? 'md:-translate-y-4' : ''}`}>
                                 {plan.popular && (
                                     <div
-                                        className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-purple-600 px-3 py-1 text-white text-sm font-semibold">
+                                        className="absolute -top-8 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-1 text-white text-sm font-semibold shadow-lg shadow-purple-500/50">
                                         Most Popular
                                     </div>
                                 )}
-                                <div className="text-center p-6">
-                                    <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
-                                </div>
-                                <div className="mt-4 text-center">
-                                    <span className="text-4xl text-violet-400 font-bold">
-                                        &#8377; {plan.price}
-                                    </span>
-                                </div>
-                                <div className="px-4 pb-8">
-                                    <ul className="mb-8 space-y-4">
-                                        <li className="flex items-center text-white">
-                                            {plan.credit}
-                                        </li>
-                                        <li className="flex items-center text-white">
-                                            {plan.description}
-                                        </li>
-                                    </ul>
+                                <div className={`relative bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-sm p-8 rounded-3xl border ${
+                                    plan.popular ? 'border-purple-500 shadow-2xl shadow-purple-500/20' : 'border-white/10'
+                                } hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-2`}>
+                                    <div className="text-center mb-6">
+                                        <h3 className="text-2xl font-bold text-white mb-4">{plan.name}</h3>
+                                        <div className="mb-4">
+                                            <span className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                                &#8377; {plan.price}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="mb-8">
+                                        <ul className="space-y-4">
+                                            <li className="flex items-center gap-3 text-gray-300">
+                                                <svg className="w-5 h-5 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span>{plan.credit}</span>
+                                            </li>
+                                            <li className="flex items-center gap-3 text-gray-300">
+                                                <svg className="w-5 h-5 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span>{plan.description}</span>
+                                            </li>
+                                            <li className="flex items-center gap-3 text-gray-300">
+                                                <svg className="w-5 h-5 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span>HD Quality Export</span>
+                                            </li>
+                                            <li className="flex items-center gap-3 text-gray-300">
+                                                <svg className="w-5 h-5 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span>24/7 Support</span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                     <button
-                                        className=
-                                            "
-                                            w-full py-3 px-6 text-center text-white font-semibold rounded-full
-                                            bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600
-                                            transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer
-                                            " onClick={() => handleOrder(plan.id)}
+                                        className={`w-full py-4 px-6 text-center text-white font-semibold rounded-2xl transition-all duration-300 ${
+                                            plan.popular
+                                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-xl hover:shadow-purple-500/50 hover:scale-105'
+                                                : 'bg-white/5 border border-white/20 hover:bg-white/10'
+                                        }`}
+                                        onClick={() => handleOrder(plan.id)}
                                     >
                                         Choose Plan
                                     </button>

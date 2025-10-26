@@ -20,15 +20,15 @@ const Menubar = () => {
         openSignIn({});
     }
     return (
-        <nav className="bg-white px-8 py-4 flex justify-between items-center">
+        <nav className="backdrop-blur-md border-b border-white/10 px-8 py-4 flex justify-between items-center sticky top-0 z-50">
             {/* Logo Section + Text*/}
             <Link to="/" className="flex items-center space-x-2">
                 <img
                     src={assets.logo}
                     alt="logo"
-                    className="h-8 w-8 object-contain cursor-pointer"
+                    className="h-8 w-8 object-contain cursor-pointer invert"
                 />
-                <span className="text-2xl font-semibold text-indigo-700 cursor-pointer">
+                <span className="text-2xl font-semibold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer">
                     Clearify<span className="text-gray-400 cursor-pointer">Pro</span>
                 </span>
             </Link>
@@ -36,12 +36,12 @@ const Menubar = () => {
             {/* Right Side : Action Buttons */}
             <div className="hidden md:flex items-center space-x-4 justify-between">
                 <SignedOut>
-                    <button className="text-gray-700 hover:text-blue-500 font-medium cursor-pointer"
+                    <button className="text-gray-300 hover:text-purple-400 font-medium cursor-pointer transition-colors duration-300"
                             onClick={openLogin}>
                         Login
                     </button>
                     <button
-                        className="bg-gray-100 hover:bg-gray-200 font-medium px-4 py-2 rounded-full transition-all cursor-pointer"
+                        className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium px-6 py-2 rounded-full transition-all cursor-pointer hover:shadow-lg hover:shadow-purple-500/50"
                         onClick={openRegister}>
                         Sign Up
                     </button>
@@ -49,14 +49,14 @@ const Menubar = () => {
                 <SignedIn>
                     <div className="flex items-center gap-2 sm:gap-3">
                         <button onClick={() => navigate("/pricing")}
-                                className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
-                            <img src={assets.dollar} alt="credit" height={24} width={24}/>
-                            <p className="text-xs sm:text-sm font-medium text-gray-600">
-                                Credits: {credit}
+                                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:bg-white/20 transition-all duration-300 cursor-pointer">
+                            <img src={assets.dollar} alt="credit" height={24} width={24} className="brightness-0 invert"/>
+                            <p className="text-xs sm:text-sm font-medium text-gray-300">
+                                Credits: <span className="text-purple-400 font-semibold">{credit}</span>
                             </p>
                         </button>
-                        <p className="text-gray-600 max-sm:hidden">
-                            Hi, <span className="text-blue-500 font-semibold">{user ? user.fullName : user}</span>
+                        <p className="text-gray-300 max-sm:hidden">
+                            Hi, <span className="text-purple-400 font-semibold">{user ? user.fullName : user}</span>
                         </p>
                     </div>
                     <UserButton/>
@@ -66,7 +66,7 @@ const Menubar = () => {
             {/* Mobile View */}
             <div className="flex md:hidden">
                 <button
-                    className="cursor-pointer"
+                    className="cursor-pointer text-white"
                     onClick={() => setMenuOpen(!menuOpen)}
                 >
                     {menuOpen ? <X size={28}/> : <Menu size={28}/>}
@@ -75,31 +75,33 @@ const Menubar = () => {
 
             {/* Mobile Menu */}
             {menuOpen && (
-                <div className="absolute top-16 right-8 bg-white shadow-md rounded-md flex flex-col space-y-4 w-40 p-4">
+                <div className="absolute top-16 right-8 bg-gray-900/95 backdrop-blur-md border border-white/10 shadow-2xl rounded-2xl flex flex-col space-y-4 w-48 p-4">
                     <SignedOut>
-                        <button className="text-gray-700 hover:text-blue-500 font-medium cursor-pointer"
+                        <button className="text-gray-300 hover:text-purple-400 font-medium cursor-pointer transition-colors duration-300"
                                 onClick={openLogin}
                         >
                             Login
                         </button>
                         <button
-                            className="bg-gray-100 hover:bg-gray-200 font-medium px-4 py-2 rounded-full transition-all text-center cursor-pointer"
+                            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium px-4 py-2 rounded-full transition-all text-center cursor-pointer"
                             onClick={openRegister}
                         >
                             Sign Up
                         </button>
                     </SignedOut>
                     <SignedIn>
-                        <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="flex flex-col gap-3">
                             <button onClick={() => navigate("/pricing")}
-                                    className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
-                                <img src={assets.dollar} alt="credit" height={24} width={24}/>
-                                <p className="text-xs sm:text-sm font-medium text-gray-600">
-                                    Credits: {credit}
+                                    className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full hover:bg-white/20 transition-all duration-300 cursor-pointer">
+                                <img src={assets.dollar} alt="credit" height={20} width={20} className="brightness-0 invert"/>
+                                <p className="text-xs font-medium text-gray-300">
+                                    Credits: <span className="text-purple-400 font-semibold">{credit}</span>
                                 </p>
                             </button>
+                            <div className="flex justify-center">
+                                <UserButton/>
+                            </div>
                         </div>
-                        <UserButton/>
                     </SignedIn>
                 </div>
             )}
