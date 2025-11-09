@@ -50,7 +50,7 @@ const Menubar = () => {
                     <div className="flex items-center gap-2 sm:gap-3">
                         <button onClick={() => navigate("/pricing")}
                                 className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full hover:bg-white/20 transition-all duration-300 cursor-pointer">
-                            <img src={assets.dollar} alt="credit" height={24} width={24} className="brightness-0 invert"/>
+                            <img src={assets.dollar} alt="credit" height={24} width={24} className="brightness invert"/>
                             <p className="text-xs sm:text-sm font-medium text-gray-300">
                                 Credits: <span className="text-purple-400 font-semibold">{credit}</span>
                             </p>

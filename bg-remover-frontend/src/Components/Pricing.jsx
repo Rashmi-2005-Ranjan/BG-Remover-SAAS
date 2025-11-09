@@ -85,10 +85,10 @@ const Pricing = () => {
                                         </ul>
                                     </div>
                                     <button
-                                        className={`w-full py-4 px-6 text-center text-white font-semibold rounded-2xl transition-all duration-300 ${
+                                        className={`w-full py-4 px-6 text-center cursor-pointer text-white font-semibold rounded-2xl transition-all duration-300 ${
                                             plan.popular
                                                 ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-xl hover:shadow-purple-500/50 hover:scale-105'
-                                                : 'bg-white/5 border border-white/20 hover:bg-white/10'
+                                                : 'bg-white/5 border border-white/20 hover:bg-white/10 cursor-pointer'
                                         }`}
                                         onClick={() => handleOrder(plan.id)}
                                     >
